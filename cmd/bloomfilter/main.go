@@ -5,9 +5,12 @@ import (
     "github.com/luma-labs/bloom-filter/pkg/bloomfilter"
 )
 
+
+
 func main() {
-    bf := bloomfilter.NewBloomFilter(1000, 3) // Size and hash functions
+    bf := bloomfilter.NewBloomFilter(1000, 3)
     bf.Add([]byte("example123"))
+    bf.Add([]byte("example"))
 	fmt.Println(bf)
 
     if bf.Contains([]byte("example123")) {
