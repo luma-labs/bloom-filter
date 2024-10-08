@@ -1,21 +1,22 @@
 package main
 
 import (
-    "fmt"
-    "github.com/luma-labs/bloom-filter/pkg/bloomfilter"
+	"fmt"
+	"github.com/luma-labs/bloom-filter/pkg/bloomfilter"
 )
 
-
-
 func main() {
-    bf := bloomfilter.NewBloomFilter(1000, 3)
-    bf.Add([]byte("example123"))
-    bf.Add([]byte("example"))
-	fmt.Println(bf)
+	// Create a Bloom filter for 100 items with a false positive rate of 0.01
+	filter := bloomfilter.NewBloomFilter(10, 3)
 
-    if bf.Contains([]byte("example123")) {
-        fmt.Println("Item is probably in the set")
-    } else {
-        fmt.Println("Item is definitely not in the set")
-    }
+	// Add some elements
+	filter.Add([]byte("alice"))
+	filter.Add([]byte("bob"))
+
+	fmt.Println("False positive rate:", filter.Rate())
+
+	anotherFilter := bloomfilter.NewBloomFilter(10, 3)
+	anotherFilter.Add([]byte("alice"))
+	anotherFilter.Add([]byte("bob"))
+	fmt.Println("Are the filters equal?", filter.Equals(anotherFilter)) // false
 }

@@ -3,6 +3,8 @@ package hash
 import (
 	"github.com/cespare/xxhash/v2"
 	"strconv"
+    "fmt"
+	"github.com/luma-labs/bloom-filter/internal/utils"
 )
 
 // TwoHashes represents the result of two hash functions applied to the same value
@@ -29,11 +31,6 @@ type HashableInput []byte
 // Hashing structure to perform hash operations
 type Hashing struct{}
 
-// getDefaultSeed returns a default seed for hashing
-func getDefaultSeed() uint64 {
-	return 42 //! TODO
-}
-
 // numberToHex converts a number to hexadecimal string
 func numberToHex(num uint64) string {
 	return strconv.FormatUint(num, 16)
@@ -47,7 +44,7 @@ func (h *Hashing) DoubleHashing(n int, hashA, hashB, size uint64) uint64 {
 // GetDistinctIndexes generates a set of distinct indexes using double hashing
 func (h *Hashing) GetDistinctIndexes(element HashableInput, size, number int, seed *uint64) []int {
 	if seed == nil {
-		defaultSeed := getDefaultSeed()
+		defaultSeed := utils.GetDefaultSeed()
 		seed = &defaultSeed
 	}
 	n := 0
@@ -78,7 +75,7 @@ func (h *Hashing) GetDistinctIndexes(element HashableInput, size, number int, se
 // GetIndexes generates N indexes on range [0, size) using double hashing
 func (h *Hashing) GetIndexes(element HashableInput, size, hashCount int, seed *uint64) []int {
 	if seed == nil {
-		defaultSeed := getDefaultSeed()
+		defaultSeed := utils.GetDefaultSeed()
 		seed = &defaultSeed
 	}
 	hashes := h.HashTwice(element, *seed)
@@ -143,15 +140,15 @@ func (h *Hashing) HashIntAndString(elem HashableInput, seed uint64) TwoHashesTem
 	}
 }
 
-// func main() {
-// 	hashing := Hashing{}
-// 	element := []byte("example data")
-// 	indexes := hashing.GetIndexes(element, 100, 5, nil)
-// 	fmt.Println("Generated indexes:", indexes)
+func main() {
+	hashing := Hashing{}
+	element := []byte("example data")
+	indexes := hashing.GetIndexes(element, 100, 5, nil)
+	fmt.Println("Generated indexes:", indexes)
 
-// 	twoHashes := hashing.HashTwice(element, getDefaultSeed())
-// 	fmt.Printf("First hash: %d, Second hash: %d\n", twoHashes.First, twoHashes.Second)
+	twoHashes := hashing.HashTwice(element, utils.GetDefaultSeed())
+	fmt.Printf("First hash: %d, Second hash: %d\n", twoHashes.First, twoHashes.Second)
 
-// 	twoHashesString := hashing.HashTwiceAsString(element, getDefaultSeed())
-// 	fmt.Printf("First hash (hex): %s, Second hash (hex): %s\n", twoHashesString.First, twoHashesString.Second)
-// }
+	twoHashesString := hashing.HashTwiceAsString(element, utils.GetDefaultSeed())
+	fmt.Printf("First hash (hex): %s, Second hash (hex): %s\n", twoHashesString.First, twoHashesString.Second)
+}
