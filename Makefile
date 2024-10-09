@@ -1,6 +1,6 @@
 # Define project variables
 BINARY_NAME=bloomfilter
-PKG=github.com/yourusername/bloom-filter
+PKG=github.com/luma-labs/bloom-filter
 
 # Default target: Build the binary
 build:

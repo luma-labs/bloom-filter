@@ -26,7 +26,7 @@ func NewBloomFilter(size uint, nbHashes uint) *BloomFilter {
 		size:     size,
 		nbHashes: nbHashes,
 		filter:   bits.NewBitset(int(size)),
-		seed:     22,
+		seed:     utils.GetDefaultSeed(),
 	}
 }
 
@@ -58,8 +58,8 @@ func OptimalFilterSize(nbItems int, errorRate float64) uint {
 }
 
 // OptimalHashes computes the optimal number of hash functions
-func OptimalHashes(size uint, nbItems int) uint {
-	return uint(math.Ceil((float64(size) / float64(nbItems)) * math.Ln2))
+func OptimalHashes(size uint, length int) uint {
+	return uint(math.Ceil((float64(size) / float64(length)) * math.Ln2))
 }
 
 // Add adds an element to the Bloom filter
@@ -98,4 +98,9 @@ func (bf *BloomFilter) Equals(other *BloomFilter) bool {
 
 func (bf *BloomFilter) Size() uint {
 	return bf.size
+}
+
+func (bf *BloomFilter) PrintEveryByte() int {
+	fmt.Println("Number of true bits:", bf.filter.NumOfTrueBits())
+	return bf.filter.PrintEverything()
 }

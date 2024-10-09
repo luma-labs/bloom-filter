@@ -1,9 +1,8 @@
 package hash
 
 import (
-	"github.com/cespare/xxhash/v2"
 	"strconv"
-    "fmt"
+	"github.com/cespare/xxhash/v2"
 	"github.com/luma-labs/bloom-filter/internal/utils"
 )
 
@@ -88,9 +87,12 @@ func (h *Hashing) GetIndexes(element HashableInput, size, hashCount int, seed *u
 
 // Serialize hashes an element into a uint64
 func (h *Hashing) Serialize(element HashableInput, seed uint64) uint64 {
-	hasher := xxhash.New()
+	if seed == 0 {
+		seed = utils.GetDefaultSeed()
+	}
+	hasher := xxhash.NewWithSeed(seed)
 	hasher.Write(element)
-	return hasher.Sum64() ^ seed
+	return hasher.Sum64()
 }
 
 // HashTwice hashes a value into two values
@@ -140,15 +142,15 @@ func (h *Hashing) HashIntAndString(elem HashableInput, seed uint64) TwoHashesTem
 	}
 }
 
-func main() {
-	hashing := Hashing{}
-	element := []byte("example data")
-	indexes := hashing.GetIndexes(element, 100, 5, nil)
-	fmt.Println("Generated indexes:", indexes)
+// func main() {
+// 	hashing := Hashing{}
+// 	element := []byte("example data")
+// 	indexes := hashing.GetIndexes(element, 100, 5, nil)
+// 	fmt.Println("Generated indexes:", indexes)
 
-	twoHashes := hashing.HashTwice(element, utils.GetDefaultSeed())
-	fmt.Printf("First hash: %d, Second hash: %d\n", twoHashes.First, twoHashes.Second)
+// 	twoHashes := hashing.HashTwice(element, utils.GetDefaultSeed())
+// 	fmt.Printf("First hash: %d, Second hash: %d\n", twoHashes.First, twoHashes.Second)
 
-	twoHashesString := hashing.HashTwiceAsString(element, utils.GetDefaultSeed())
-	fmt.Printf("First hash (hex): %s, Second hash (hex): %s\n", twoHashesString.First, twoHashesString.Second)
-}
+// 	twoHashesString := hashing.HashTwiceAsString(element, utils.GetDefaultSeed())
+// 	fmt.Printf("First hash (hex): %s, Second hash (hex): %s\n", twoHashesString.First, twoHashesString.Second)
+// }

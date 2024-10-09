@@ -26,7 +26,7 @@ func (b *Bitset) Add(index int) {
 	wordIndex := index / bitsPerWord
 	bitIndex := 1 << (index % bitsPerWord)
 	b.array[wordIndex] |= uint8(bitIndex)
-	fmt.Println(b.array)
+	// fmt.Println(b.array)
 }
 
 func (b *Bitset) Contains(index int) bool {
@@ -76,4 +76,12 @@ func (b *Bitset) Equals(other *Bitset) bool {
 		}
 	}
 	return true
+}
+
+func (b *Bitset) PrintEverything() int {
+	for i := 0; i < len(b.array); i++ {
+		fmt.Printf("%08b ", b.array[i])
+	}
+	fmt.Println()
+	return 0
 }
