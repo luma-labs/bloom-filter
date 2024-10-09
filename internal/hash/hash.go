@@ -141,16 +141,3 @@ func (h *Hashing) HashIntAndString(elem HashableInput, seed uint64) TwoHashesTem
 		Second: hash,
 	}
 }
-
-// func main() {
-// 	hashing := Hashing{}
-// 	element := []byte("example data")
-// 	indexes := hashing.GetIndexes(element, 100, 5, nil)
-// 	fmt.Println("Generated indexes:", indexes)
-
-// 	twoHashes := hashing.HashTwice(element, utils.GetDefaultSeed())
-// 	fmt.Printf("First hash: %d, Second hash: %d\n", twoHashes.First, twoHashes.Second)
-
-// 	twoHashesString := hashing.HashTwiceAsString(element, utils.GetDefaultSeed())
-// 	fmt.Printf("First hash (hex): %s, Second hash (hex): %s\n", twoHashesString.First, twoHashesString.Second)
-// }

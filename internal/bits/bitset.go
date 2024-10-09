@@ -22,15 +22,12 @@ func NewBitset(size int) *Bitset {
 }
 
 func (b *Bitset) Add(index int) {
-	// wordIndex := int(math.Floor(float64(index) / bitsPerWord))
 	wordIndex := index / bitsPerWord
 	bitIndex := 1 << (index % bitsPerWord)
 	b.array[wordIndex] |= uint8(bitIndex)
-	// fmt.Println(b.array)
 }
 
 func (b *Bitset) Contains(index int) bool {
-	// wordIndex := int(math.Floor(float64(index) / bitsPerWord))
 	wordIndex := index / bitsPerWord
 	bitIndex := 1 << (index % bitsPerWord)
 	return b.array[wordIndex]&uint8(bitIndex) != 0

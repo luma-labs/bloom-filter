@@ -8,7 +8,7 @@ import (
 func main() {
 	// Create a Bloom filter for 100 items with a false positive rate of 0.01
 	filter := bloomfilter.Create(100, 0.01)
-	// Add some elements
+
 	filter.Add([]byte("alice"))
 	filter.Add([]byte("bob"))
 	filter.Add([]byte("alice"))
