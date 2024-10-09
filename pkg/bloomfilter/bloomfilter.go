@@ -1,11 +1,12 @@
 package bloomfilter
 
 import (
+	"fmt"
+	"math"
+
 	"github.com/luma-labs/bloom-filter/internal/bits"
 	"github.com/luma-labs/bloom-filter/internal/hash"
 	"github.com/luma-labs/bloom-filter/internal/utils"
-	"math"
-	"fmt"
 )
 
 // BloomFilter represents the Bloom filter structure
@@ -25,7 +26,7 @@ func NewBloomFilter(size uint, nbHashes uint) *BloomFilter {
 		size:     size,
 		nbHashes: nbHashes,
 		filter:   bits.NewBitset(int(size)),
-		seed:     utils.GetDefaultSeed(),
+		seed:     22,
 	}
 }
 
@@ -52,7 +53,8 @@ func From(items []string, errorRate float64, seed *uint64) *BloomFilter {
 
 // OptimalFilterSize computes the optimal size for the Bloom filter
 func OptimalFilterSize(nbItems int, errorRate float64) uint {
-	return uint(math.Ceil(float64(nbItems) * math.Abs(math.Log(errorRate)) / (math.Ln2 * math.Ln2)))
+	// return uint(math.Ceil(float64(nbItems) * math.Abs(math.Log(errorRate)) / (math.Ln2 * math.Ln2)))
+	return uint(math.Ceil(-((float64(nbItems) * math.Log(errorRate)) / (math.Ln2 * math.Ln2))))
 }
 
 // OptimalHashes computes the optimal number of hash functions
@@ -92,4 +94,8 @@ func (bf *BloomFilter) Equals(other *BloomFilter) bool {
 		return false
 	}
 	return bf.filter.Equals(other.filter)
+}
+
+func (bf *BloomFilter) Size() uint {
+	return bf.size
 }
