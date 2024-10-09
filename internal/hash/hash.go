@@ -2,6 +2,7 @@ package hash
 
 import (
 	"strconv"
+
 	"github.com/cespare/xxhash/v2"
 	"github.com/luma-labs/bloom-filter/internal/utils"
 )
@@ -42,7 +43,7 @@ func (h *Hashing) DoubleHashing(n int, hashA, hashB, size uint64) uint64 {
 
 // GetDistinctIndexes generates a set of distinct indexes using double hashing
 func (h *Hashing) GetDistinctIndexes(element HashableInput, size, number int, seed *uint64) []int {
-	if seed == nil {
+	if seed == nil || *seed == 0 {
 		defaultSeed := utils.GetDefaultSeed()
 		seed = &defaultSeed
 	}
@@ -73,7 +74,7 @@ func (h *Hashing) GetDistinctIndexes(element HashableInput, size, number int, se
 
 // GetIndexes generates N indexes on range [0, size) using double hashing
 func (h *Hashing) GetIndexes(element HashableInput, size, hashCount int, seed *uint64) []int {
-	if seed == nil {
+	if seed == nil || *seed == 0 {
 		defaultSeed := utils.GetDefaultSeed()
 		seed = &defaultSeed
 	}

@@ -13,13 +13,16 @@ type Bitset struct {
 const bitsPerWord = 8
 
 func NewBitset(size int) *Bitset {
-	differeceToroundOff := bitsPerWord - (size % bitsPerWord)
-	size += differeceToroundOff
+	if size % bitsPerWord != 0 {
+		differeceToroundOff := bitsPerWord - (size % bitsPerWord)
+		size += differeceToroundOff
+	}
 	return &Bitset{
 		size:  size,
 		array: make([]uint8, int(math.Ceil(float64(size)/float64(bitsPerWord)))),
 	}
 }
+
 
 func (b *Bitset) Add(index int) {
 	wordIndex := index / bitsPerWord
