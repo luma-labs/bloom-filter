@@ -53,7 +53,6 @@ func From(items []string, errorRate float64, seed *uint64) *BloomFilter {
 
 // OptimalFilterSize computes the optimal size for the Bloom filter
 func OptimalFilterSize(nbItems int, errorRate float64) uint {
-	// return uint(math.Ceil(float64(nbItems) * math.Abs(math.Log(errorRate)) / (math.Ln2 * math.Ln2)))
 	return uint(math.Ceil(-((float64(nbItems) * math.Log(errorRate)) / (math.Ln2 * math.Ln2))))
 }
 
@@ -103,4 +102,19 @@ func (bf *BloomFilter) Size() uint {
 func (bf *BloomFilter) PrintEveryByte() int {
 	fmt.Println("Number of true bits:", bf.filter.NumOfTrueBits())
 	return bf.filter.PrintEverything()
+}
+
+func DisplaySize(nbItems int, errorRate float64) {
+	size := OptimalFilterSize(nbItems, errorRate)
+	fmt.Printf("Size retuend from optimal os %d:", size)
+	spaceInBytes := size / 8
+	spaceInKB := float64(spaceInBytes) / 1024.0
+	spaceInMB := spaceInKB / 1024.0
+
+	fmt.Printf("This Above Bloom filter will occupy:\n")
+	fmt.Printf("- %d bits\n", size)
+	fmt.Printf("- %d bytes\n", spaceInBytes)
+	fmt.Printf("- %.2f KB\n", spaceInKB)
+	fmt.Printf("- %.2f MB\n", spaceInMB)
+
 }
